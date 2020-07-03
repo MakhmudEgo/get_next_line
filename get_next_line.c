@@ -6,13 +6,34 @@
 /*   By: mizola <mizola@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/29 18:27:01 by mizola            #+#    #+#             */
-/*   Updated: 2020/07/03 17:24:57 by mizola           ###   ########.fr       */
+/*   Updated: 2020/07/03 20:43:55 by mizola           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+static char *if_return_value_zero(char **s)
+{
+	char *tmp;
+	int i;
+	char *line;
 
+	i = 0;
+	tmp = *s;
+	while (tmp[i] != '\0')
+	{
+		if (tmp[i] == '\n')
+		{
+			line = ft_substr(*s, 0, i);//
+			tmp = ft_substr(*s, i + 1, ft_strlen(*s) - i + 1);
+			free(*s);
+			*s = tmp;
+			return (line);
+		}
+		i++;
+	}
+	return (ft_strdup(""));
+}
 
 int	get_next_line(int fd, char **line)
 {
@@ -41,15 +62,10 @@ int	get_next_line(int fd, char **line)
 			tmp++;
 		}
 	}
-	int l = 0;
 	if (readed == 0)
 	{
-		while (fds[fd][l] != '\0')
-		{
-			printf("%c", fds[fd][l]);
-			l++;
-		}
-
+		*line = if_return_value_zero(&fds[fd]);
+//		return (1);
 	}
 	return 0;
 }
@@ -62,8 +78,9 @@ int	main()
 	line = 0x0;
 	int i = 0;
 	int fd = open("../test.c", O_RDONLY);
-	while (get_next_line(fd, &line) != 0)
+	while (i != 10)
 	{
+		get_next_line(fd, &line);
 		printf("%s\n", line);
 		i++;
 	}
