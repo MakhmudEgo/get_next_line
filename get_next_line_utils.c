@@ -6,7 +6,7 @@
 /*   By: mizola <mizola@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/29 18:28:27 by mizola            #+#    #+#             */
-/*   Updated: 2020/07/03 14:55:09 by mizola           ###   ########.fr       */
+/*   Updated: 2020/07/03 14:56:40 by mizola           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (str);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char const *s2)
 {
 	char			*str;
 	unsigned int	len;
@@ -105,5 +105,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	while (s2[n] != '\0')
 		str[i++] = s2[n++];
 	str[i] = '\0';
+	free(s1);
 	return (str);
 }
