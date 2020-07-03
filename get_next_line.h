@@ -6,29 +6,36 @@
 /*   By: mizola <mizola@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/29 18:28:39 by mizola            #+#    #+#             */
-/*   Updated: 2020/07/01 15:24:00 by mizola           ###   ########.fr       */
+/*   Updated: 2020/07/03 14:45:55 by mizola           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef G_GET_NEXT_LINE_H
 # define G_GET_NEXT_LINE_H
-# define BUFFER_SIZE 10
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 10
+# endif
 
 # include <stdio.h>
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdlib.h>
 
-typedef struct s_list
+typedef struct	s_list
 {
-	int line_len;
-	int buff;
-} t_data;
+	char		*remains[256];
+	char		*readed;
+	int			line_len;
+	int			buff;
+}				t_data;
 
-int get_next_line(int fd, char **line);
-int ft_strlen(const char *str);
-int	ft_strlcpy(char *dst, const char *src, int siz);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
+int				get_next_line(int fd, char **line);
+int				ft_strlen(const char *str);
+int				ft_strlcpy(char *dst, const char *src, int siz);
+char			*ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strdup(const char *s1);
+
 
 #endif
-

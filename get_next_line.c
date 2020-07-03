@@ -6,7 +6,7 @@
 /*   By: mizola <mizola@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/29 18:27:01 by mizola            #+#    #+#             */
-/*   Updated: 2020/07/02 12:20:04 by mizola           ###   ########.fr       */
+/*   Updated: 2020/07/03 15:23:17 by mizola           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,36 +14,38 @@
 
 int	get_next_line(int fd, char **line)
 {
-	char		*hello;
-	t_data		str;
-	int			tmp;
-	int 		n;
+	static char *fds[256];
+	int buff;
+	int readed;
+	char *str_tmp;
+	int i;
+	int tmp;
 
-	n = 0;
-	str.buff = BUFFER_SIZE;
-	str.line_len = ft_strlen(*line);
-	hello = malloc(str.buff);
-	while ((tmp = read(fd, hello, str.buff)) > 0)
+	i = 0;
+	tmp = 0;
+	buff = 	BUFFER_SIZE;
+	str_tmp = malloc(BUFFER_SIZE);
+	while ((readed = read(fd, str_tmp, buff)) > 0)
 	{
-		hello[tmp] = '\0';
-		while (hello[n] != '\0')
+		str_tmp[readed] = '\0';
+//		printf("\n%s\n", fds[fd]);
+		fds[fd] = ft_strjoin(fds[fd], str_tmp);
+		printf("\n%s\n", fds[fd]);
+//		free(str_tmp);//
+		while (fds[fd][tmp] != '\0')
 		{
-			if (hello[n] == '\n') // && str.line_len <= n
+			if (fds[fd][tmp] == '\n')
 			{
-				*line = ft_substr(hello, 0, n);
+
+				*line = ft_substr(fds[fd], 0, tmp);
+				free(str_tmp);
 				return (1);
 			}
-			n++;
+//			fds[fd][tmp];
+			tmp++;
 		}
-		str.buff += BUFFER_SIZE;
-		hello = malloc(str.buff);
-//		if (hello[n] == '\0')
-//		{
-//
-//		}
+//		str_tmp = malloc(buff += BUFFER_SIZE);
 	}
-//	*line = malloc(sizeof(char) * tmp + 1);
-//	printf("%d\n%s\n", ij, hello);
 	return 0;
 }
 
