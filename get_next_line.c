@@ -17,16 +17,13 @@
 int	get_next_line(int fd, char **line)
 {
 	static char *fds[256];
-	int buff;
 	int readed;
 	char *str_tmp;
 	int tmp;
 
 	tmp = 0;
-	buff = 	BUFFER_SIZE;
 	str_tmp = malloc(BUFFER_SIZE);
-	printf("\n%s\n", fds[fd]);
-	while ((readed = read(fd, str_tmp, buff)) > 0)
+	while ((readed = read(fd, str_tmp, BUFFER_SIZE)) > 0)
 	{
 		str_tmp[readed] = '\0';
 		fds[fd] = ft_strjoin(fds[fd], str_tmp);
@@ -44,6 +41,16 @@ int	get_next_line(int fd, char **line)
 			tmp++;
 		}
 	}
+	int l = 0;
+	if (readed == 0)
+	{
+		while (fds[fd][l] != '\0')
+		{
+			printf("%c", fds[fd][l]);
+			l++;
+		}
+
+	}
 	return 0;
 }
 
@@ -55,12 +62,10 @@ int	main()
 	line = 0x0;
 	int i = 0;
 	int fd = open("../test.c", O_RDONLY);
-	while (i < 4)
+	while (get_next_line(fd, &line) != 0)
 	{
-		get_next_line(fd, &line);
 		printf("%s\n", line);
 		i++;
 	}
 
-	printf("%d", fd);
 }
