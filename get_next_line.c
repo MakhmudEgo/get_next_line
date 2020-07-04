@@ -6,7 +6,7 @@
 /*   By: mizola <mizola@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/29 18:27:01 by mizola            #+#    #+#             */
-/*   Updated: 2020/07/03 20:43:55 by mizola           ###   ########.fr       */
+/*   Updated: 2020/07/04 17:22:19 by mizola           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static char *if_return_value_zero(char **s)
 		}
 		i++;
 	}
-	return (ft_strdup(""));
+	return (0x0);
 }
 
 int	get_next_line(int fd, char **line)
@@ -63,11 +63,13 @@ int	get_next_line(int fd, char **line)
 		}
 	}
 	if (readed == 0)
-	{
 		*line = if_return_value_zero(&fds[fd]);
-//		return (1);
+	if (fds[fd][0] != '\0')
+	{
+		free(fds[fd]);
+		return 0;
 	}
-	return 0;
+	return (1);
 }
 
 int	main()
@@ -78,11 +80,11 @@ int	main()
 	line = 0x0;
 	int i = 0;
 	int fd = open("../test.c", O_RDONLY);
-	while (i != 10)
+	while (get_next_line(fd, &line))
 	{
-		get_next_line(fd, &line);
 		printf("%s\n", line);
 		i++;
 	}
+//	printf("%s\n", line);
 
 }
