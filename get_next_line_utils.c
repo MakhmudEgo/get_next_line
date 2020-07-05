@@ -6,13 +6,13 @@
 /*   By: mizola <mizola@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/29 18:28:27 by mizola            #+#    #+#             */
-/*   Updated: 2020/07/03 14:56:40 by mizola           ###   ########.fr       */
+/*   Updated: 2020/07/05 16:09:44 by mizola           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int ft_strlen(const char *str)
+int		ft_strlen(const char *str)
 {
 	int i;
 
@@ -22,24 +22,6 @@ int ft_strlen(const char *str)
 	while (str[i] != '\0')
 		i++;
 	return (i);
-}
-
-int		ft_strlcpy(char *dst, const char *src, int siz)
-{
-	int i;
-
-	i = 0;
-	if (!src)
-		return (0);
-	if (siz == 0)
-		return (ft_strlen(src));
-	while (i < siz - 1 && src[i] != '\0')
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = '\0';
-	return (ft_strlen(src));
 }
 
 char	*ft_strdup(const char *s1)
@@ -69,8 +51,6 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	i = 0;
 	if (s == NULL)
 		return (NULL);
-//	if (ft_strlen(s) < start)
-//		return (ft_strdup(""));
 	str = (char*)malloc(sizeof(char) * (len + 1));
 	if (str == NULL)
 		return (NULL);
@@ -84,27 +64,27 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (str);
 }
 
-char	*ft_strjoin(char *s1, char const *s2)
+char	*ft_strjoin(char **s1, char const *s2)
 {
 	char			*str;
 	unsigned int	len;
 	unsigned int	i;
 	unsigned int	n;
+	char			*tmp;
 
-//	if (!s1 || !s2)
-//		return (NULL);
-	len = ft_strlen(s1) + ft_strlen(s2) + 1;
+	len = ft_strlen(*s1) + ft_strlen(s2) + 1;
 	i = 0;
 	n = 0;
 	str = (char*)malloc(len);
+	tmp = *s1;
 	if (str == NULL)
 		return (NULL);
-	while (s1 && s1[n] != '\0')
-		str[i++] = s1[n++];
+	while (tmp && tmp[n] != '\0')
+		str[i++] = tmp[n++];
 	n = 0;
 	while (s2[n] != '\0')
 		str[i++] = s2[n++];
 	str[i] = '\0';
-	free(s1);
+	free(tmp);
 	return (str);
 }
