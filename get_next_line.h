@@ -6,7 +6,7 @@
 /*   By: mizola <mizola@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/29 18:28:39 by mizola            #+#    #+#             */
-/*   Updated: 2020/07/03 14:53:30 by mizola           ###   ########.fr       */
+/*   Updated: 2020/07/05 14:07:25 by mizola           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define G_GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
+#  define BUFFER_SIZE 27
 # endif
 
 # include <stdio.h>
@@ -32,10 +32,8 @@ typedef struct	s_list
 
 int				get_next_line(int fd, char **line);
 int				ft_strlen(const char *str);
-int				ft_strlcpy(char *dst, const char *src, int siz);
 char			*ft_substr(char const *s, unsigned int start, size_t len);
-char	*ft_strjoin(char *s1, char const *s2);
-char	*ft_strdup(const char *s1);
-
+char			*ft_strjoin(char **s1, char const *s2);
+char			*ft_strdup(const char *s1);
 
 #endif
