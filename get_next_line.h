@@ -6,7 +6,7 @@
 /*   By: mizola <mizola@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/29 18:28:39 by mizola            #+#    #+#             */
-/*   Updated: 2020/07/05 14:07:25 by mizola           ###   ########.fr       */
+/*   Updated: 2020/07/05 16:10:53 by mizola           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@
 #  define BUFFER_SIZE 27
 # endif
 
-# include <stdio.h>
 # include <fcntl.h>
-# include <unistd.h>
 # include <stdlib.h>
 
 typedef struct	s_list
