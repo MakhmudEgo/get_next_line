@@ -6,7 +6,7 @@
 /*   By: mizola <mizola@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/29 18:28:39 by mizola            #+#    #+#             */
-/*   Updated: 2020/07/05 16:10:53 by mizola           ###   ########.fr       */
+/*   Updated: 2020/07/06 12:17:52 by mizola           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 # define G_GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 27
+#  define BUFFER_SIZE 2
 # endif
 
 # include <fcntl.h>
 # include <stdlib.h>
+# include <unistd.h>
+# include <stdio.h>
 
 typedef struct	s_list
 {

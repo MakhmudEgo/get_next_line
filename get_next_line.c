@@ -6,7 +6,7 @@
 /*   By: mizola <mizola@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/29 18:27:01 by mizola            #+#    #+#             */
-/*   Updated: 2020/07/05 16:07:52 by mizola           ###   ########.fr       */
+/*   Updated: 2020/07/06 13:31:51 by mizola           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	if_return_value_zero(char **s, char **line)
 
 	i = 0;
 	tmp = *s;
-	while (tmp[i] != '\0')
+	while (tmp && tmp[i] != '\0')
 	{
 		if (tmp[i] == '\n')
 		{
@@ -49,8 +49,10 @@ static int	if_line_break(char **line, char **fds,
 static int	if_one_line(char **line, char **fds, const int *tmp, char **str_tmp)
 {
 	*line = ft_substr(*fds, 0, *tmp + 1);
-	free(*str_tmp);
-	free(*fds);
+	if (*str_tmp)
+		free(*str_tmp);
+	if (*fds)
+		free(*fds);
 	*fds = 0x0;
 	return (0);
 }
@@ -63,10 +65,10 @@ int			get_next_line(int fd, char **line)
 	int			readed;
 
 	tmp = 0;
-	str_tmp = malloc(BUFFER_SIZE);
+	str_tmp = malloc(BUFFER_SIZE + 1);
 	if (!str_tmp || !line || fd < 0)
 		return (-1);
-	while ((readed = read(fd, str_tmp, BUFFER_SIZE)) >= 0)
+	while ((readed = read(fd, str_tmp, BUFFER_SIZE)) > 0)
 	{
 		str_tmp[readed] = '\0';
 		fds[fd] = ft_strjoin(&fds[fd], str_tmp);
@@ -76,10 +78,12 @@ int			get_next_line(int fd, char **line)
 				return (if_line_break(&(*line), &fds[fd], &tmp, &str_tmp));
 			tmp++;
 		}
-		if (fds[fd][tmp] == '\0')
-			return (if_one_line(&(*line), &fds[fd], &tmp, &str_tmp));
-		if (readed == 0)
-			return (if_return_value_zero(&fds[fd], &(*line)));
 	}
+	if (fds[fd] && fds[fd][tmp] == '\0')
+		return (if_one_line(&(*line), &fds[fd], &tmp, &str_tmp));
+	if (readed == 0)
+		return (if_return_value_zero(&fds[fd], &(*line)));
 	return (-1);
 }
+
+
