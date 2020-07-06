@@ -6,7 +6,7 @@
 /*   By: mizola <mizola@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/29 18:28:27 by mizola            #+#    #+#             */
-/*   Updated: 2020/07/05 16:09:44 by mizola           ###   ########.fr       */
+/*   Updated: 2020/07/06 19:13:15 by mizola           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,20 +72,21 @@ char	*ft_strjoin(char **s1, char const *s2)
 	unsigned int	n;
 	char			*tmp;
 
-	len = ft_strlen(*s1) + ft_strlen(s2) + 1;
+ 	len = ft_strlen(*s1) + ft_strlen(s2) + 1;
 	i = 0;
 	n = 0;
 	str = (char*)malloc(len);
-	tmp = *s1;
-	if (str == NULL)
+ 	if (str == NULL) {
 		return (NULL);
-	while (tmp && tmp[n] != '\0')
+	}
+ 	tmp = *s1;
+ 	while (tmp && tmp[n] != '\0')
 		str[i++] = tmp[n++];
 	n = 0;
-	while (s2[n] != '\0')
+ 	while (s2[n] != '\0')
 		str[i++] = s2[n++];
 	str[i] = '\0';
-	if (tmp)
-		free(tmp);
+//	if (tmp)
+//		free(tmp);
 	return (str);
 }
