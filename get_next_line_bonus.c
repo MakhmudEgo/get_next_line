@@ -5,87 +5,98 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mizola <mizola@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/29 18:27:01 by mizola            #+#    #+#             */
-/*   Updated: 2020/07/06 21:54:45 by mizola           ###   ########.fr       */
+/*   Created: 2020/07/07 20:38:08 by mizola            #+#    #+#             */
+/*   Updated: 2020/07/09 15:02:46 by mizola           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static int	if_one_line(char **line, char **fds, const int *tmp, char **str_tmp)
+static int	one_line(char **line, char **rmns, int i)
 {
-	*line = ft_substr(*fds, 0, *tmp + 1);
-	if (*str_tmp)
-		free(*str_tmp);
-	if (*fds)
-		free(*fds);
-	*fds = 0x0;
-	return (0);
+	*line = ft_substr(*rmns, 0, i + 1);
+	if (*rmns)
+		free(*rmns);
+	*rmns = 0x0;
+	return (!(*line) ? -1 : 0);
 }
 
-static int	if_return_value_zero(char **s, char **line, char **str_tmp)
+static int	line_break(char **rmns, char **line, int i)
+{
+	char *tmp;
+
+	*line = ft_substr(*rmns, 0, i);
+	tmp = ft_strdup(*rmns + i + 1);
+	free(*rmns);
+	*rmns = tmp;
+	if (!(*line) || !tmp)
+	{
+		if (tmp)
+			free(tmp);
+		return (-1);
+	}
+	return (1);
+}
+
+static int	if_zero(char **rmns, char **line)
 {
 	char	*tmp;
+	char	*rmnsptr;
 	int		i;
 
 	i = 0;
-	tmp = *s;
-	while (tmp && tmp[i] != '\0')
+	rmnsptr = *rmns;
+	while (rmnsptr && rmnsptr[i] != '\0')
 	{
-		if (tmp[i] == '\n')
+		if (rmnsptr[i] == '\n')
 		{
-			*line = ft_substr(*s, 0, i);
-			tmp = ft_substr(*s, i + 1, ft_strlen(*s) - i + 1);
-			free(*s);
-			*s = tmp;
+			*line = ft_substr(*rmns, 0, i);
+			tmp = ft_substr(rmnsptr, i + 1, ft_strlen(rmnsptr) - i + 1);
+			free(*rmns);
+			*rmns = tmp;
 			return (1);
 		}
 		i++;
 	}
-	if (tmp && tmp[i] == '\0')
-		return (if_one_line(&(*line), &tmp, &i, &(*str_tmp)));
-	free(*s);
-	free(*str_tmp);
+	if (rmnsptr && rmnsptr[i] == '\0')
+		return (one_line(line, rmns, i));
 	*line = ft_strdup("");
-	return (0);
+	return (!(*line) ? -1 : 0);
 }
 
-static int	if_line_break(char **line, char **fds,
-		const int *tmp, char **str_tmp)
+static int	gnl_ass(int fd, char **line, char **rmns)
 {
-	*line = ft_substr(*fds, 0, *tmp);
-	free(*str_tmp);
-	*str_tmp = ft_strdup(*fds + *tmp + 1);
-	free(*fds);
-	*fds = *str_tmp;
-	return (1);
+	char		strread[BUFFER_SIZE + 1];
+	int			i;
+	int			n;
+	char		*rmnsptr;
+
+	i = 0;
+	while ((n = read(fd, strread, BUFFER_SIZE)) > 0)
+	{
+		strread[n] = '\0';
+		rmnsptr = ft_strdup(rmns[fd]);
+		if (rmns[fd])
+			free(rmns[fd]);
+		if (!(rmns[fd] = ft_strjoin(rmnsptr, strread)))
+			return (-1);
+		while (rmns[fd][i] != '\0')
+		{
+			if (rmns[fd][i] == '\n')
+				return (line_break(&rmns[fd], line, i));
+			i++;
+		}
+	}
+	if ((rmns[fd] && rmns[fd][i] == '\0'))
+		return (one_line(line, &rmns[fd], i));
+	return (n == 0 ? if_zero(&rmns[fd], line) : -1);
 }
 
 int			get_next_line(int fd, char **line)
 {
-	static char	*fds[256];
-	char		*str_tmp;
-	int			tmp;
-	int			readed;
+	static char *rmns[256];
 
-	tmp = 0;
-	str_tmp = malloc(BUFFER_SIZE + 1);
-	if (!str_tmp || !line || fd < 0)
+	if (!line || fd < 0 || BUFFER_SIZE < 1)
 		return (-1);
-	while ((readed = read(fd, str_tmp, BUFFER_SIZE)) > 0)
-	{
-		str_tmp[readed] = '\0';
-		fds[fd] = ft_strjoin(&fds[fd], str_tmp);
-		while (fds[fd][tmp] != '\0')
-		{
-			if (fds[fd][tmp] == '\n')
-				return (if_line_break(&(*line), &fds[fd], &tmp, &str_tmp));
-			tmp++;
-		}
-	}
-	if (fds[fd] && fds[fd][tmp] == '\0')
-		return (if_one_line(&(*line), &fds[fd], &tmp, &str_tmp));
-	if (readed == 0)
-		return (if_return_value_zero(&fds[fd], &(*line), &str_tmp));
-	return (-1);
+	return (gnl_ass(fd, line, rmns));
 }

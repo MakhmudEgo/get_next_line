@@ -6,7 +6,7 @@
 /*   By: mizola <mizola@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/29 18:28:27 by mizola            #+#    #+#             */
-/*   Updated: 2020/07/06 21:56:54 by mizola           ###   ########.fr       */
+/*   Updated: 2020/07/09 11:25:21 by mizola           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*ft_strdup(const char *s1)
 	if (str == NULL)
 		return (NULL);
 	i = 0;
-	while (s1[i] != '\0')
+	while (s1 && s1[i] != '\0')
 	{
 		str[i] = s1[i];
 		i++;
@@ -64,26 +64,25 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (str);
 }
 
-char	*ft_strjoin(char **s1, char const *s2)
+char	*ft_strjoin(char *s1, char const *s2)
 {
 	char			*str;
 	unsigned int	len;
 	unsigned int	i;
 	unsigned int	n;
-	char			*tmp;
 
-	len = ft_strlen(*s1) + ft_strlen(s2) + 1;
 	i = 0;
 	n = 0;
+	len = ft_strlen(s1) + ft_strlen(s2) + 1;
 	str = (char*)malloc(len);
 	if (str == NULL)
 		return (NULL);
-	tmp = *s1;
-	while (tmp && tmp[n] != '\0')
-		str[i++] = tmp[n++];
+	while (s1 && s1[n] != '\0')
+		str[i++] = s1[n++];
 	n = 0;
 	while (s2[n] != '\0')
 		str[i++] = s2[n++];
 	str[i] = '\0';
+	free(s1);
 	return (str);
 }
