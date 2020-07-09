@@ -6,7 +6,7 @@
 /*   By: mizola <mizola@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 20:38:08 by mizola            #+#    #+#             */
-/*   Updated: 2020/07/09 15:07:10 by mizola           ###   ########.fr       */
+/*   Updated: 2020/07/09 15:20:16 by mizola           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,13 @@ static int	if_zero(char **rmns, char **line)
 			tmp = ft_substr(rmnsptr, i + 1, ft_strlen(rmnsptr) - i + 1);
 			free(*rmns);
 			*rmns = tmp;
-			return (1);
+			return (!(*line) || !tmp ? -1 : 1);
 		}
 		i++;
 	}
 	if (rmnsptr && rmnsptr[i] == '\0')
 		return (one_line(line, rmns, i));
-	*line = ft_strdup("");
-	return (!(*line) ? -1 : 0);
+	return (!(*line = ft_strdup("")) ? -1 : 0);
 }
 
 static int	gnl_ass(int fd, char **line, char **rmns)
@@ -78,7 +77,7 @@ static int	gnl_ass(int fd, char **line, char **rmns)
 		rmnsptr = ft_strdup(rmns[fd]);
 		if (rmns[fd])
 			free(rmns[fd]);
-		if (!(rmns[fd] = ft_strjoin(rmnsptr, strread)))
+		if (!rmnsptr || !(rmns[fd] = ft_strjoin(rmnsptr, strread)))
 			return (-1);
 		while (rmns[fd][i] != '\0')
 		{

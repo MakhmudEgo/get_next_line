@@ -6,7 +6,7 @@
 /*   By: mizola <mizola@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/29 18:28:39 by mizola            #+#    #+#             */
-/*   Updated: 2020/07/09 14:01:30 by mizola           ###   ########.fr       */
+/*   Updated: 2020/07/09 15:15:09 by mizola           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 
 # include <stdlib.h>
 # include <unistd.h>
-# include <printf.h>
-# include <fcntl.h>
 
 int				get_next_line(int fd, char **line);
 int				ft_strlen(const char *str);
